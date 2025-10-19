@@ -1,0 +1,18 @@
+# node / next
+apps/frontend/.next
+apps/frontend/node_modules
+apps/frontend/.vercel
+
+# python
+apps/api/.venv
+apps/api/__pycache__
+apps/api/.mypy_cache
+apps/api/.ruff_cache
+
+# env
+*.env
+.env
+
+# OS
+.DS_Store
+Thumbs.db
