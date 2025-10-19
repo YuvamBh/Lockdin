@@ -1,7 +1,7 @@
-version: "3.9"
+# infra/docker-compose.yml  (no 'version:' key)
 services:
   db:
-    image: pgvector/pgvector:pg16    # Postgres 16 with pgvector preinstalled
+    image: pgvector/pgvector:pg16
     container_name: ci_db
     environment:
       POSTGRES_USER: ci_user
@@ -21,6 +21,7 @@ services:
   api:
     build: ../apps/api
     container_name: ci_api
+    working_dir: /app
     env_file:
       - ./.env
     depends_on:
@@ -28,9 +29,9 @@ services:
         condition: service_healthy
     ports:
       - "8000:8000"
-
-  # Frontend is run locally during dev (faster HMR).
-  # You can containerize later for staging/prod.
+    # Bind mount so migrations written in container appear on host
+    volumes:
+      - ../apps/api:/app
 
 volumes:
   db_data:

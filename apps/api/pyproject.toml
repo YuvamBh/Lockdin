@@ -1,5 +1,5 @@
 [project]
-name = "career-intel-api"
+name = "lockedin_api"
 version = "0.1.0"
 description = "Backend API for the Career Intelligence Platform (FastAPI + Postgres + pgvector)"
 authors = [{ name = "Yuvam Bh" }]
@@ -17,6 +17,7 @@ dependencies = [
     "openai==1.51.0",
     "tenacity==8.5.0",
     "python-multipart==0.0.9",
+    "pgvector==0.2.5"
 ]
 
 [tool.black]
