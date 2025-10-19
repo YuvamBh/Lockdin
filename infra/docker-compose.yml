@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  db:
+    image: pgvector/pgvector:pg16    # Postgres 16 with pgvector preinstalled
+    container_name: ci_db
+    environment:
+      POSTGRES_USER: ci_user
+      POSTGRES_PASSWORD: ci_pass
+      POSTGRES_DB: ci_main
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ci_user -d ci_main"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build: ../apps/api
+    container_name: ci_api
+    env_file:
+      - ./.env
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+
+  # Frontend is run locally during dev (faster HMR).
+  # You can containerize later for staging/prod.
+
+volumes:
+  db_data:
